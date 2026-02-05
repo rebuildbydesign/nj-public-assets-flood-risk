@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NJ Municipal Flood Risk Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="styles.css" rel="stylesheet" />
+  <script src='https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+<body>
+  <div id="sidebar">
+    <h2>New Jersey Flood Risk Explorer</h2>
+    <br />
+    <label for="municipality-select">Choose Your Municipality</label>
+    <select id="municipality-select">
+      <option value="NEWARK CITY">Newark</option>
+      <option value="ELIZABETH CITY">Elizabeth</option>
+      <option value="CAMDEN CITY">Camden</option>
+      <option value="TRENTON CITY">Trenton</option>
+      <option value="JERSEY CITY">Jersey City</option>
+      <option value="PATERSON CITY">Paterson</option>
+      <option value="ASBURY PARK CITY">Asbury Park</option>
+      <option value="ATLANTIC CITY">Atlantic City</option>
+    </select>
+<br /><br />
+    <div class="button-group">
+            <label for="municipality-select">Select Flood Risk Scenario</label>
+      <button id="toggle-2025" class="active">Current 100-Year Floodplain (2025)</button>
+      <button id="toggle-2050">Future 100-Year Floodplain (2050)</button>
+    </div>
+    <br />
+    <div id="legend"><h3>Legend</h3></div>
+  </div>
+  <div id="map"></div>
+  <script src="scripts.js"></script>
+</body>
+</html>
