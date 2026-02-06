@@ -286,9 +286,23 @@ map.on('mousemove', e => {
   loadLayers();
 });
 
-document.getElementById('methodology-link').onclick = (e) => {
+
+const methodologyLink = document.getElementById('methodology-link');
+const methodologyPopup = document.getElementById('methodology-popup');
+const closeMethodology = document.getElementById('close-methodology');
+
+methodologyLink.addEventListener('click', e => {
   e.preventDefault();
-  document
-    .getElementById('methodology-panel')
-    .classList.toggle('hidden');
-};
+  methodologyPopup.classList.remove('hidden');
+});
+
+closeMethodology.addEventListener('click', () => {
+  methodologyPopup.classList.add('hidden');
+});
+
+// Optional: click outside to close
+methodologyPopup.addEventListener('click', e => {
+  if (e.target === methodologyPopup) {
+    methodologyPopup.classList.add('hidden');
+  }
+});

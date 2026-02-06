@@ -69,27 +69,47 @@
   </p>
 </div>
     
-<div id="methodology-panel" class="hidden">
-  <h4>Flood Scenario Methodology</h4>
+<!-- Methodology Popup -->
+<div id="methodology-popup" class="popup hidden">
+  <div class="popup-content">
+    <button id="close-methodology" aria-label="Close">×</button>
 
-  <p>
-    The <strong>2025 flood scenario</strong> represents the 1% annual chance
-    floodplain based on Rutgers’ modified statewide FEMA flood hazard data,
-    integrating effective and preliminary FEMA flood maps.
-  </p>
+    <h4>Methodology</h4>
 
-  <p>
-    The <strong>2050 flood scenario</strong> represents higher flood elevations
-    developed by Rutgers in consultation with NJDEP, reflecting approximately
-    three feet of additional water above the FEMA 1% flood, consistent with
-    New Jersey’s Inland Flood Protection Rule.
-  </p>
+    <p>
+      This analysis evaluates public asset exposure to flooding under current and
+      future conditions using floodplain datasets developed by Rutgers University
+      and the New Jersey Department of Environmental Protection (NJDEP).
+    </p>
 
-  <p class="methodology-note">
-    These flood scenarios represent water-level–based flooding and do not include
-    rainfall-driven runoff or sewer system impacts.
-  </p>
+    <p>
+      The <strong>2025 flood scenario</strong> represents the 1% annual chance
+      (100-year) floodplain derived from Rutgers’ modified statewide FEMA Flood
+      Hazard Area layer, integrating effective and preliminary FEMA Flood Insurance
+      Rate Maps and modeled water-surface elevations under current conditions.
+    </p>
+
+    <p>
+      The <strong>2050 flood scenario</strong> represents the 1% annual chance (100-year)
+      floodplain plus three feet of additional flood
+      elevation, developed by Rutgers in consultation with NJDEP to align
+      with New Jersey’s Inland Flood Protection Rule.
+    </p>
+
+    <p>
+      Public asset locations were buffered by <strong>100 feet</strong> to account
+      for building footprints, access constraints, and localized service disruption
+      beyond a single point location. Assets were classified as exposed if their
+      buffered area intersected either floodplain.
+    </p>
+
+    <p class="popup-note">
+      Flood scenarios represent water-level–based flooding only and do not include
+      rainfall-driven runoff, stormwater ponding, or sewer system impacts.
+    </p>
+  </div>
 </div>
+
 
 
   </div>
