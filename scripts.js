@@ -42,7 +42,7 @@ const assetLabels = {
   POWERPLANT: "POWER PLANT",
   SCHOOL: "SCHOOL",
   SOLIDHAZARD: "SOLID & HAZARD WASTE SITE",
-  SOLIDWASTE: "SOLID WASTE LANDFILLS",
+  SOLIDWASTE: "SOLID WASTE LANDFILL",
   SUPERFUND: "SUPERFUND",
   WASTEWATER: "WASTEWATER TREATMENT PLANT"
 };
@@ -77,37 +77,60 @@ function updateLegend(assetId) {
   const legend = document.getElementById('legend');
   if (!legend) return;
 
-  legend.innerHTML = '<h3>Step 3: Review Legend</h3><p class="legend-helper"> Colored points represent public assets located within the selected floodplain.</p>';
-
   const layer = map.getLayer(assetId);
   if (!layer) return;
 
   const sourceId = layer.source;
-  const features = map.querySourceFeatures(sourceId, {
+
+  // ⚠️ Get features (may include duplicates)
+  const rawFeatures = map.querySourceFeatures(sourceId, {
     filter: ['==', ['get', 'MUN'], activeCity]
   });
 
-  const seen = new Set();
+  // ✅ Deduplicate by UNIQUE_ID
+  const uniqueFeatures = {};
+  rawFeatures.forEach(f => {
+    const id = f.properties.UNIQUE_ID;
+    if (id) uniqueFeatures[id] = f;
+  });
 
+  const features = Object.values(uniqueFeatures);
+  const totalAssets = features.length;
+
+  // Header
+  legend.innerHTML = `
+    <h3>Step 3: Review Legend</h3>
+    <p class="legend-helper">
+      <strong>${activeCity}</strong> has
+      <strong>${totalAssets}</strong> public assets exposed
+      (${activeYear} flood scenario).
+    </p>
+  `;
+
+  // Count by asset type
+  const counts = {};
   features.forEach(f => {
     const type = f.properties.ASSET;
-    if (!seen.has(type)) {
-      seen.add(type);
-      const color = colors[type] || '#999';
+    counts[type] = (counts[type] || 0) + 1;
+  });
 
-      const div = document.createElement('div');
-      div.className = 'legend-item';
-      const label = assetLabels[type] || type;
+  // Render legend rows
+  Object.keys(counts).sort().forEach(type => {
+    const color = colors[type] || '#999';
+    const label = assetLabels[type] || type;
 
-div.innerHTML = `
-  <span class="legend-color" style="background-color:${color}"></span>
-  ${label}
-`;
-
-      legend.appendChild(div);
-    }
+    const div = document.createElement('div');
+    div.className = 'legend-item';
+    div.innerHTML = `
+      <span class="legend-color" style="background-color:${color}"></span>
+      ${label} (${counts[type]})
+    `;
+    legend.appendChild(div);
   });
 }
+
+
+
 
 // --------------------------------------------------
 // Zoom to municipality (STABLE + CACHED)
