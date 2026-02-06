@@ -10,9 +10,21 @@
 </head>
 <body>
   <div id="sidebar">
-    <h2>New Jersey Flood Risk Explorer</h2>
+    <p class="purpose-strong">New Jersey Flood Risk Explorer</p>
+    <p class="helper-text">
+    Flood exposure to public assets increases long-term municipal costs through
+    damage, service disruption, insurance, and capital replacement. This tool supports proactive planning to reduce future taxpayer burden.
+  </p>
+  <a href="#" id="methodology-link">Click here for methodology</a>
+  
+
+
     <br />
-    <label for="municipality-select">Choose Your Municipality</label>
+    <h3>Step 1: Select a Municipality</h3>
+    <p class="helper-text">
+  Focus on one municipality at a time to understand local exposure.
+</p>
+
     <select id="municipality-select">
       <option value="NEWARK CITY">Newark</option>
       <option value="ELIZABETH CITY">Elizabeth</option>
@@ -24,13 +36,62 @@
       <option value="ATLANTIC CITY">Atlantic City</option>
     </select>
 <br /><br />
+
     <div class="button-group">
-            <label for="municipality-select">Select Flood Risk Scenario</label>
-      <button id="toggle-2025" class="active">Current 100-Year Floodplain (2025)</button>
-      <button id="toggle-2050">Future 100-Year Floodplain (2050)</button>
+            <h3>Step 2: Compare Flood Risk Scenarios</h3>
+
+<p class="helper-text">
+  Toggle between current and future coastal flood risk to understand how exposure increases over time.
+</p>
+
+<button id="toggle-2025" class="active">
+  Current Flood Risk (2025)
+  <span class="button-subtext">
+    Assets exposed under today’s flood conditions
+  </span>
+</button>
+
+<button id="toggle-2050">
+  Future Flood Risk (2050)
+  <span class="button-subtext">
+    Expanded exposure under higher flood elevations
+  </span>
+</button>
+
+
     </div>
-    <br />
-    <div id="legend"><h3>Legend</h3></div>
+
+    <div id="legend">
+  <h3>Step 3: Review Legend</h3>
+
+  <p class="legend-helper">
+    Colored points represent public assets located within the selected floodplain.
+  </p>
+</div>
+    
+<div id="methodology-panel" class="hidden">
+  <h4>Flood Scenario Methodology</h4>
+
+  <p>
+    The <strong>2025 flood scenario</strong> represents the 1% annual chance
+    floodplain based on Rutgers’ modified statewide FEMA flood hazard data,
+    integrating effective and preliminary FEMA flood maps.
+  </p>
+
+  <p>
+    The <strong>2050 flood scenario</strong> represents higher flood elevations
+    developed by Rutgers in consultation with NJDEP, reflecting approximately
+    three feet of additional water above the FEMA 1% flood, consistent with
+    New Jersey’s Inland Flood Protection Rule.
+  </p>
+
+  <p class="methodology-note">
+    These flood scenarios represent water-level–based flooding and do not include
+    rainfall-driven runoff or sewer system impacts.
+  </p>
+</div>
+
+
   </div>
   <div id="map"></div>
   <script src="scripts.js"></script>

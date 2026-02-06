@@ -11,31 +11,46 @@ let activeYear = "2025";
 let activeCity = "NEWARK CITY";
 let popup = null;
 
-const cityCenters = {
-  "NEWARK CITY": [-74.1724, 40.7357],
-  "ELIZABETH CITY": [-74.2107, 40.6639],
-  "CAMDEN CITY": [-75.1196, 39.9259],
-  "TRENTON CITY": [-74.7631, 40.2171],
-  "JERSEY CITY": [-74.0776, 40.7282],
-  "PATERSON CITY": [-74.1718, 40.9168],
-  "ASBURY PARK CITY": [-74.0121, 40.2204],
-  "ATLANTIC CITY": [-74.4229, 39.3643]
-};
+// --------------------------------------------------
+// Boundary bounds cache (CRITICAL FIX)
+// --------------------------------------------------
+const boundaryBoundsByMun = {};
 
+// --------------------------------------------------
+// Asset colors
+// --------------------------------------------------
 const colors = {
-  AIRPORT: "#111111",        // deep charcoal black
-  HOSPITAL: "#D7263D",       // bold crimson red
-  KCS: "#FF8700",            // vivid orange
-  LIBRARY: "#FFD100",        // strong gold/yellow
-  PARK: "#3FB950",           // accessible green (GitHub green)
-  POWERPLANT: "#8C1EFF",     // vibrant purple
-  SCHOOL: "#FF5EBF",         // neon pink
-  SOLIDHAZARD: "#A15500",    // rich brown/orange (hazard tone)
-  SOLIDWASTE: "#FF3D00",     // intense red-orange
-  SUPERFUND: "#C10087",      // deep magenta
-  WASTEWATER: "#5A5A5A"      // slate gray (distinguishable from flood blue)
+  AIRPORT: "#111111",
+  HOSPITAL: "#D7263D",
+  KCS: "#FF8700",
+  LIBRARY: "#FFD100",
+  PARK: "#3FB950",
+  POWERPLANT: "#8C1EFF",
+  SCHOOL: "#FF5EBF",
+  SOLIDHAZARD: "#A15500",
+  SOLIDWASTE: "#FF3D00",
+  SUPERFUND: "#C10087",
+  WASTEWATER: "#5A5A5A"
 };
 
+const assetLabels = {
+  AIRPORT: "AIRPORT",
+  HOSPITAL: "HOSPITAL",
+  KCS: "KNOWN CONTAMINATED SITE",
+  LIBRARY: "LIBRARY",
+  PARK: "PARK",
+  POWERPLANT: "POWER PLANT",
+  SCHOOL: "SCHOOL",
+  SOLIDHAZARD: "SOLID & HAZARD WASTE SITE",
+  SOLIDWASTE: "SOLID WASTE LANDFILLS",
+  SUPERFUND: "SUPERFUND",
+  WASTEWATER: "WASTEWATER TREATMENT PLANT"
+};
+
+
+// --------------------------------------------------
+// Layer visibility + filters
+// --------------------------------------------------
 function loadLayers() {
   const floodId = `floodplain_${activeYear}`;
   const assetId = `assets_${activeYear}`;
@@ -48,16 +63,21 @@ function loadLayers() {
 
   map.setLayoutProperty(floodId, 'visibility', 'visible');
   map.setLayoutProperty(assetId, 'visibility', 'visible');
-  map.setFilter(assetId, ['==', ['get', 'MUN'], activeCity]);
 
-  // Wait until layers finish rendering before updating the legend
+  map.setFilter(assetId, ['==', ['get', 'MUN'], activeCity]);
+  map.setFilter('boundary', ['==', ['get', 'MUN'], activeCity]);
+
   map.once('idle', () => updateLegend(assetId));
 }
 
+// --------------------------------------------------
+// Legend
+// --------------------------------------------------
 function updateLegend(assetId) {
   const legend = document.getElementById('legend');
   if (!legend) return;
-  legend.innerHTML = '<h3>Legend</h3>';
+
+  legend.innerHTML = '<h3>Step 3: Review Legend</h3><p class="legend-helper"> Colored points represent public assets located within the selected floodplain.</p>';
 
   const layer = map.getLayer(assetId);
   if (!layer) return;
@@ -68,41 +88,114 @@ function updateLegend(assetId) {
   });
 
   const seen = new Set();
+
   features.forEach(f => {
     const type = f.properties.ASSET;
     if (!seen.has(type)) {
       seen.add(type);
       const color = colors[type] || '#999';
+
       const div = document.createElement('div');
       div.className = 'legend-item';
-      div.innerHTML = `<span class='legend-color' style='background-color:${color}'></span>${type}`;
+      const label = assetLabels[type] || type;
+
+div.innerHTML = `
+  <span class="legend-color" style="background-color:${color}"></span>
+  ${label}
+`;
+
       legend.appendChild(div);
     }
   });
 }
 
+// --------------------------------------------------
+// Zoom to municipality (STABLE + CACHED)
+// --------------------------------------------------
+function zoomToMunicipality(munName) {
+  const bounds = boundaryBoundsByMun[munName];
+  if (!bounds) return;
+
+  map.stop();
+
+  map.fitBounds(bounds, {
+    padding: {
+      top: 60,
+      bottom: 60,
+      left: 340,   // sidebar width
+      right: 60
+    },
+
+    // ✅ SMALL corrective nudge (not half the sidebar)
+    offset: [-50, 0],
+
+    duration: 2000,
+    linear: false,
+    maxZoom: 14,
+    essential: true
+  });
+}
+
+
+
+
+// --------------------------------------------------
+// Map load
+// --------------------------------------------------
 map.on('load', () => {
+
+  // ---- Boundary source & layer ----
   map.addSource('boundary', {
     type: 'geojson',
-    data: 'data/boundary.geojson'
+    data: 'data/boundary.json'
   });
 
-map.addLayer({
-  id: 'boundary',
-  type: 'line',
-  source: 'boundary',
-  paint: {
-    'line-color': 'rgba(255, 0, 0, 0.6)', // red with 60% opacity
-    'line-width': 3,
-    'line-dasharray': [2, 2]
-  }
-});
+  map.addLayer({
+    id: 'boundary',
+    type: 'line',
+    source: 'boundary',
+    paint: {
+      'line-color': 'rgba(255, 0, 0, 0.6)',
+      'line-width': 3,
+      'line-dasharray': [2, 2]
+    },
+    filter: ['==', ['get', 'MUN'], activeCity]
+  });
 
+  // ---- Precompute boundary bounds ONCE ----
+  fetch('data/boundary.json')
+    .then(res => res.json())
+    .then(geojson => {
+      geojson.features.forEach(f => {
+        const mun = f.properties?.MUN;
+        if (!mun) return;
 
+        const bounds = new mapboxgl.LngLatBounds();
+        const geom = f.geometry;
+
+        if (geom.type === 'Polygon') {
+          geom.coordinates[0].forEach(c => bounds.extend(c));
+        }
+
+        if (geom.type === 'MultiPolygon') {
+          geom.coordinates.forEach(p =>
+            p[0].forEach(c => bounds.extend(c))
+          );
+        }
+
+        boundaryBoundsByMun[mun] = bounds;
+      });
+
+      // initial zoom after bounds are ready
+      zoomToMunicipality(activeCity);
+    });
+
+  // ---- Floodplain + assets ----
   ['2025', '2050'].forEach(year => {
+
     map.addSource(`floodplain_${year}`, {
       type: 'geojson',
-      data: `data/floodplain_${year}.geojson`
+      data: `data/floodplain_${year}.json`
     });
 
     map.addLayer({
@@ -110,7 +203,7 @@ map.addLayer({
       type: 'fill',
       source: `floodplain_${year}`,
       paint: {
-        'fill-color': 'rgba(0, 183, 255, 0.3)',
+        'fill-color': 'rgba(0, 183, 255, 0.3)'
       },
       layout: { visibility: year === '2025' ? 'visible' : 'none' }
     });
@@ -126,9 +219,11 @@ map.addLayer({
       source: `assets_${year}`,
       paint: {
         'circle-radius': 6,
-        'circle-color': ["match", ["get", "ASSET"],
+        'circle-color': [
+          'match',
+          ['get', 'ASSET'],
           ...Object.entries(colors).flat(),
-          "#cccccc"
+          '#cccccc'
         ],
         'circle-stroke-color': '#ffffff',
         'circle-stroke-width': 1
@@ -138,43 +233,41 @@ map.addLayer({
     });
   });
 
-  map.on('mousemove', (e) => {
-    const features = map.queryRenderedFeatures(e.point, {
-      layers: [`assets_${activeYear}`]
-    });
-
-    map.getCanvas().style.cursor = features.length ? 'pointer' : '';
-
-    if (popup) {
-      popup.remove();
-      popup = null;
-    }
-
-    if (features.length) {
-      const f = features[0];
-      const coords = f.geometry.coordinates.slice();
-      popup = new mapboxgl.Popup({ closeButton: false })
-        .setLngLat(coords)
-        .setHTML(`<strong>${f.properties.NAME}</strong>`)
-        .addTo(map);
-    }
+  // ---- Hover popup ----
+map.on('mousemove', e => {
+  const features = map.queryRenderedFeatures(e.point, {
+    layers: [`assets_${activeYear}`]
   });
 
-  map.on('mouseleave', 'assets_2025', () => { if (popup) popup.remove(); });
-  map.on('mouseleave', 'assets_2050', () => { if (popup) popup.remove(); });
+  map.getCanvas().style.cursor = features.length ? 'pointer' : '';
 
-  // Municipality buttons
-  document.getElementById('municipality-select').addEventListener('change', (e) => {
-  const selectedCity = e.target.value;
-  if (cityCenters[selectedCity]) {
-    activeCity = selectedCity;
-    map.flyTo({ center: cityCenters[activeCity], zoom: 12 });
-    loadLayers();
+  if (popup) popup.remove();
+
+  if (features.length) {
+    const f = features[0];
+    const name = f.properties.NAME
+      ? f.properties.NAME.toUpperCase()
+      : '';
+
+    popup = new mapboxgl.Popup({ closeButton: false })
+      .setLngLat(f.geometry.coordinates)
+      .setHTML(`<strong>${name}</strong>`)
+      .addTo(map);
   }
 });
 
 
-  // Year toggle buttons
+  map.on('mouseleave', 'assets_2025', () => popup && popup.remove());
+  map.on('mouseleave', 'assets_2050', () => popup && popup.remove());
+
+  // ---- Municipality dropdown ----
+  document.getElementById('municipality-select').addEventListener('change', e => {
+    activeCity = e.target.value;
+    loadLayers();
+    zoomToMunicipality(activeCity);
+  });
+
+  // ---- Year toggles ----
   document.getElementById('toggle-2025').onclick = () => {
     activeYear = '2025';
     document.getElementById('toggle-2025').classList.add('active');
@@ -189,6 +282,13 @@ map.addLayer({
     loadLayers();
   };
 
-  // ✅ Initial load of correct layers and legend for 2025
+  // ---- Initial state ----
   loadLayers();
 });
+
+document.getElementById('methodology-link').onclick = (e) => {
+  e.preventDefault();
+  document
+    .getElementById('methodology-panel')
+    .classList.toggle('hidden');
+};

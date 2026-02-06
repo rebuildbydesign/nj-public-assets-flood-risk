@@ -19,6 +19,99 @@ body {
   margin-bottom: 10px;
 }
 
+#purpose {
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 20px;
+  color: #e6e6e6;
+}
+
+#purpose p {
+  margin: 0 0 8px 0;
+}
+
+.purpose-strong {
+  font-weight: 600;
+  font-size: 18px;
+  color: #f7c320;
+}
+
+#methodology-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #ade4fa;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+#methodology-panel {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #e0e0e0;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #333;
+}
+
+#methodology-panel h4 {
+  margin-top: 0;
+  font-size: 13px;
+  color: #ade4fa;
+}
+
+.methodology-note {
+  font-style: italic;
+  color: #bdbdbd;
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+h3 {
+  font-weight: 600;
+  font-size: 16px;
+  color: #f7c320;
+}
+
+.helper-text {
+  font-size: 12px;
+  color: #fff;
+  margin: 4px 0 10px 0;
+}
+
+.button-subtext {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 6px;
+  line-height: 1.4;
+  color: #fff;
+}
+
+.button-group button.active .button-subtext {
+  color: #000;
+  opacity: 0.75;
+}
+
+.button-group button {
+  margin-bottom: 8px;
+}
+
+
+
+.legend-helper {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #fff;
+  margin: 0 0 12px 0;
+}
+
+
 label {
   font-weight: bold;
   display: block;
@@ -30,7 +123,7 @@ label {
   width: 100%;
   padding: 8px;
   margin-bottom: 15px;
-  background-color: #222;
+  background-color: #363636;
   color: #fff;
   border: none;
   font-size: 14px;
@@ -44,7 +137,7 @@ label {
   display: inline-block;
   width: 100%;
   margin: 2px 1%;
-  background-color: #222;
+  background-color: #363636;
   color: #fff;
   border: none;
   padding: 10px;
