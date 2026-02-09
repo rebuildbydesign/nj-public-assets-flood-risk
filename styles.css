@@ -1,34 +1,47 @@
+/* ========================================
+   BASE STYLES - Body & global settings
+   ======================================== */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   display: flex;
   height: 100vh;
+  font-size: 16px;
+  overflow: hidden;
 }
 
 method-strong {
-    color: #f7c320;
+  color: #f7c320;
 }
 
+/* ========================================
+   MAP LOGO - Top-right overlay
+   ======================================== */
 .map-logo {
   position: absolute;
   top: 20px;
-  right: 20px;
+  left: 350px;
   z-index: 10;
+  pointer-events: none;
 }
 
 .map-logo img {
   display: block;
-  max-width: 90px;
+  max-width: 80px;
   height: auto;
 }
 
+/* ========================================
+   SIDEBAR - Left control panel
+   ======================================== */
 #sidebar {
   width: 300px;
   background-color: #000;
   color: #fff;
   padding: 15px;
   overflow-y: auto;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.25);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.25);
+  z-index: 2;
 }
 
 #sidebar h2 {
@@ -36,8 +49,9 @@ method-strong {
   margin-bottom: 10px;
 }
 
+/* Header & Introduction */
 #purpose {
-  font-size: 13px;
+  font-size: 0.8125em;
   line-height: 1.4;
   margin-bottom: 20px;
   color: #e6e6e6;
@@ -49,49 +63,61 @@ method-strong {
 
 .purpose-strong {
   font-weight: 600;
-  font-size: 18px;
+  font-size: 1.125em;
   color: #f7c320;
+  line-height: 1.3;
 }
 
+/* Methodology Link */
 #methodology-link {
   display: inline-block;
   margin-top: 8px;
-  font-size: 12px;
+  font-size: 0.75em;
   color: #ade4fa;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
 }
 
+#methodology-link:hover {
+  text-decoration: underline;
+}
+
+/* ========================================
+   METHODOLOGY POPUP - Modal overlay
+   ======================================== */
 .popup {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
+  padding: 20px;
 }
 
 .popup-content {
   background: #111;
   color: #fff;
-  max-width: 480px;
+  max-width: 600px;
+  max-height: 85vh;
   padding: 20px 24px;
   border-radius: 6px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   position: relative;
-  font-size: 13px;
+  font-size: 0.8125em;
   line-height: 1.5;
+  overflow-y: auto;
 }
 
 .popup-content h4 {
   margin-top: 0;
   margin-bottom: 12px;
   color: #ade4fa;
-  font-size: 15px;
+  font-size: 1.15em;
 }
 
 .popup-note {
@@ -107,65 +133,67 @@ method-strong {
   background: none;
   border: none;
   color: #fff;
-  font-size: 18px;
+  font-size: 1.5em;
   cursor: pointer;
+  padding: 5px 10px;
+  line-height: 1;
+}
+
+#close-methodology:hover {
+  color: #ade4fa;
 }
 
 .hidden {
   display: none;
 }
 
-#methodology-link {
-  display: inline-block;
-  margin-top: 8px;
-  font-size: 12px;
-  color: #ade4fa;
-  text-decoration: underline;
-  cursor: pointer;
+/* Data Sources List Styling */
+.data-sources {
+  margin: 10px 0 0 0;
+  padding-left: 20px;
+  font-size: 0.9em;
+  line-height: 1.6;
 }
 
-
-
-h3 {
-  font-weight: 600;
-  font-size: 16px;
-  color: #f7c320;
-}
-
-.helper-text {
-  font-size: 12px;
-  color: #fff;
-  margin: 4px 0 10px 0;
-}
-
-.button-subtext {
-  display: block;
-  font-size: 12px;
-  font-weight: 400;
-  margin-top: 6px;
-  line-height: 1.4;
-  color: #fff;
-}
-
-.button-group button.active .button-subtext {
-  color: #000;
-  opacity: 0.75;
-}
-
-.button-group button {
+.data-sources li {
   margin-bottom: 8px;
 }
 
-
-
-.legend-helper {
-  font-size: 12px;
-  line-height: 1.4;
-  color: #fff;
-  margin: 0 0 12px 0;
+.data-sources a {
+  color: #ade4fa;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
 }
 
+.data-sources a:hover {
+  border-bottom-color: #ade4fa;
+}
 
+.data-sources strong {
+  color: #fff;
+}
+
+/* ========================================
+   STEP HEADERS & HELPER TEXT
+   ======================================== */
+h3 {
+  font-weight: 600;
+  font-size: 1em;
+  color: #f7c320;
+  margin-top: 0;
+}
+
+.helper-text {
+  font-size: 0.75em;
+  color: #fff;
+  margin: 4px 0 10px 0;
+  line-height: 1.4;
+}
+
+/* ========================================
+   STEP 1 - Municipality Dropdown
+   ======================================== */
 label {
   font-weight: bold;
   display: block;
@@ -175,41 +203,100 @@ label {
 
 #municipality-select {
   width: 100%;
-  padding: 8px;
+  padding: 12px;
   margin-bottom: 15px;
   background-color: #363636;
   color: #fff;
-  border: none;
-  font-size: 14px;
+  border: 2px solid #4a4a4a;
+  font-size: 0.875em;
+  cursor: pointer;
 }
 
+/* ========================================
+   STEP 2 - Scenario Toggle Buttons
+   ======================================== */
 .button-group {
   margin-bottom: 20px;
 }
 
 .button-group button {
-  display: inline-block;
+  display: block;
   width: 100%;
-  margin: 2px 1%;
+  margin: 0 0 10px 0;
   background-color: #363636;
   color: #fff;
-  border: none;
-  padding: 10px;
+  border: 3px solid #5a5a5a;
+  border-radius: 0;
+  padding: 14px 12px;
   cursor: pointer;
-  text-align: center;
-  font-size: 14px;
+  text-align: left;
+  font-size: 0.875em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.button-group button:hover {
+  background-color: #454545;
+  border-color: #7a7a7a;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
 }
 
 .button-group button.active {
   background-color: #ade4fa;
+  border-color: #6dc4e8;
   font-weight: bold;
   color: #000;
+  box-shadow: 0 4px 8px rgba(173, 228, 250, 0.4);
 }
 
-#map {
-  flex-grow: 1;
+.button-group button.active:hover {
+  background-color: #9de0fc;
+  border-color: #5cbde0;
+  transform: translateY(-1px);
 }
 
+.button-subtext {
+  display: block;
+  font-size: 0.75em;
+  font-weight: 400;
+  margin-top: 6px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.button-group button.active .button-subtext {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* ========================================
+   DOWNLOAD SECTION
+   ======================================== */
+.download-button {
+  display: inline-block;
+  width: auto;
+  margin: 20px 0 0 0;
+  background: none;
+  color: #ade4fa;
+  border: none;
+  border-bottom: 1px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  font-size: 0.775em;
+  font-weight: 500;
+  transition: border-color 0.2s ease;
+}
+
+.download-button:hover {
+  border-bottom-color: #ade4fa;
+}
+
+/* ========================================
+   STEP 3 - Legend (asset counts & colors)
+   ======================================== */
 #legend {
   margin-top: 20px;
 }
@@ -219,33 +306,266 @@ label {
   margin-bottom: 10px;
 }
 
+.legend-helper {
+  font-size: 0.75em;
+  line-height: 1.4;
+  color: #fff;
+  margin: 0 0 12px 0;
+}
+
 .legend-item {
   display: flex;
   align-items: center;
-  margin-bottom: 6px;
-  font-size: 13px;
+  margin-bottom: 8px;
+  font-size: 0.8125em;
 }
 
 .legend-color {
   width: 16px;
   height: 16px;
+  min-width: 16px;
   margin-right: 8px;
   border-radius: 3px;
   border: 1px solid #fff;
-} 
+}
 
+/* ========================================
+   MAP CONTAINER - Mapbox GL renders here
+   ======================================== */
+#map {
+  flex-grow: 1;
+  position: relative;
+}
+
+/* ========================================
+   MOBILE TOGGLE BUTTON
+   ======================================== */
+.mobile-toggle {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background-color: #000;
+  color: #f7c320;
+  border: 3px solid #f7c320;
+  padding: 12px 24px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-toggle:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+/* ========================================
+   MOBILE RESPONSIVE - Phones (< 768px)
+   ======================================== */
 @media screen and (max-width: 768px) {
+  body {
+    flex-direction: column;
+    font-size: 14px;
+    /* Reduce base font size for mobile */
+  }
+
+  /* Sidebar becomes compact bottom drawer */
   #sidebar {
-    width: 100%;
-    height: 300px;
-    position: absolute;
-    z-index: 1;
-    overflow-y: scroll;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 97%;
+    height: 50vh;
+    /* Only 50% of screen */
+    max-height: 50vh;
+    padding: 10px 12px;
+    transform: translateY(0);
+    /* Sidebar open by default on mobile */
+    transition: transform 0.3s ease;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+    border-top: 2px solid #f7c320;
   }
+
+  #sidebar.open {
+    transform: translateY(0);
+  }
+
+  
+  /* Map takes full screen */
   #map {
-    margin-top: 300px;
+    width: 100%;
+    height: 100vh;
   }
-  .button-group button, #municipality-select {
-    font-size: 12px;
+
+  /* Logo positioning - smaller */
+  .map-logo {
+    top: 12px;
+    left: 12px;
   }
-} 
+
+  .map-logo img {
+    max-width: 50px;
+  }
+
+  /* Compact header */
+  .purpose-strong {
+    font-size: 1em;
+    /* 14px base = 14px */
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .helper-text {
+    font-size: 0.64em;
+    /* ~9px */
+    margin: 2px 0 6px 0;
+    line-height: 1.3;
+  }
+
+  #methodology-link {
+    font-size: 0.64em;
+    /* ~9px */
+    margin-top: 4px;
+  }
+
+  /* Step headers - smaller */
+  h3 {
+    font-size: 0.85em;
+    /* ~12px */
+    margin: 8px 0 4px 0;
+  }
+
+  /* Municipality dropdown - compact */
+  #municipality-select {
+    padding: 8px;
+    font-size: 0.78em;
+    /* ~11px */
+    margin-bottom: 8px;
+  }
+
+  /* Scenario buttons - much more compact */
+  .button-group {
+    margin-bottom: 10px;
+  }
+
+  .button-group button {
+    padding: 8px 10px;
+    font-size: 0.78em;
+    /* ~11px */
+    min-height: auto;
+    margin-bottom: 6px;
+  }
+
+  .button-subtext {
+    font-size: 0.7em;
+    /* ~8px */
+    margin-top: 3px;
+    line-height: 1.2;
+  }
+
+  /* Legend - compact */
+  #legend {
+    margin-top: 10px;
+  }
+
+  .legend-helper {
+    font-size: 0.64em;
+    /* ~9px */
+    margin-bottom: 6px;
+  }
+
+  .legend-item {
+    font-size: 0.71em;
+    /* ~10px */
+    margin-bottom: 4px;
+  }
+
+  .legend-color {
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
+    margin-right: 6px;
+  }
+
+  /* Download button */
+  .download-button {
+    font-size: 0.64em;
+    /* ~9px */
+    margin-top: 8px;
+  }
+
+  /* Methodology popup - optimized for mobile */
+  .popup {
+    padding: 8px;
+  }
+
+  .popup-content {
+    max-height: 85vh;
+    padding: 12px 15px;
+    font-size: 0.75em;
+    /* Smaller text */
+  }
+
+  .popup-content h4 {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+  }
+
+  .data-sources {
+    font-size: 0.85em;
+    padding-left: 15px;
+  }
+
+  .data-sources li {
+    margin-bottom: 6px;
+  }
+
+  #close-methodology {
+    font-size: 1.5em;
+    padding: 5px 10px;
+  }
+
+  /* Spacing adjustments */
+  br {
+    display: none;
+    /* Remove extra line breaks on mobile */
+  }
+}
+
+/* ========================================
+   TABLET PORTRAIT (768px - 1024px)
+   ======================================== */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  #sidebar {
+    width: 300px;
+  }
+
+  .button-group button {
+    font-size: 0.9em;
+    padding: 12px;
+  }
+
+  #municipality-select {
+    font-size: 0.9em;
+  }
+
+  .map-logo {
+    right: 60px;
+  }
+}
+
+/* ========================================
+   LANDSCAPE PHONES (orientation)
+   ======================================== */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  #sidebar {
+    height: 60vh;
+    transform: translateY(calc(100% - 40px));
+  }
+
+  #sidebar.open+#map .mobile-toggle {
+    bottom: calc(60vh + 10px);
+  }
+}
