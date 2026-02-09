@@ -329,3 +329,5 @@ methodologyPopup.addEventListener('click', e => {
     methodologyPopup.classList.add('hidden');
   }
 });
+
+
