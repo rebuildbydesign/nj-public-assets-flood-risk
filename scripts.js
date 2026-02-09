@@ -99,7 +99,7 @@ function updateLegend(assetId) {
 
   // Header
   legend.innerHTML = `
-    <h3>Step 3: Review Legend</h3>
+    <h3>Step 3: Review Assets with Flood Risk</h3>
     <p class="legend-helper">
       <strong>${activeCity}</strong> has
       <strong>${totalAssets}</strong> public assets exposed
