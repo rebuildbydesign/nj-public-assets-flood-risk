@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>New Jersey Flood Risk Explorer</title>
+  <title>NJ Municipal Flood Risk & Public Asset Explorer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="styles.css" rel="stylesheet" />
   <script src='https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js'></script>
@@ -16,18 +16,15 @@
   <div id="sidebar">
     
     <!-- Header & Introduction -->
-    <p class="purpose-strong">New Jersey Flood Risk Explorer</p>
+    <p class="purpose-strong">NJ Municipal Flood Risk &amp; Public Asset Explorer</p>
     <p class="helper-text">
-      Flood exposure to public assets increases long-term municipal costs through
-      damage, service disruption, insurance, and capital replacement. This tool supports proactive planning to reduce future taxpayer burden.
-    </p>    
-    <a href="#" id="methodology-link">Click here for methodology >></a> 
-<br />    <br />
-    
+      Rebuild by Design examined 8 municipalities across New Jersey as an extension of the <a href="https://rebuildbydesign.org/nj-flood-risk/" target="_blank" class="report-link"><em>NJ Flood Risk = Financial Risk</em></a> report. Annual property tax revenue is at risk of displacement without government intervention for sea level rise — and everyday critical infrastructure including schools, hospitals, parks, and wastewater facilities is also exposed. This tool maps public assets within current and projected floodplains at the municipal level to support proactive planning.
+    </p>
     <!-- Step 1: Municipality Selection -->
     <h3>Step 1: Select a Municipality</h3>
     <p class="helper-text">
       Focus on one municipality at a time to understand local exposure.
+      Don't see yours? <a href="mailto:jhuynh@rebuildbydesign.org?subject=Municipality%20Request%20-%20NJ%20Flood%20Risk%20Explorer" class="request-city-link"><em>Request a city</em></a>.
     </p>
     <select id="municipality-select">
       <option value="NEWARK CITY">Newark</option>
@@ -48,18 +45,8 @@
       <p class="helper-text">
         Toggle between current and future coastal flood risk to understand how exposure increases over time.
       </p>
-      <button id="toggle-2025" class="active">
-        Current Flood Risk (2025)
-        <span class="button-subtext">
-          Assets exposed under today's flood conditions using 100-year floodplain
-        </span>
-      </button>
-      <button id="toggle-2050">
-        Future Flood Risk (2050)
-        <span class="button-subtext">
-          Expanded exposure under higher flood elevations using 100-year floodplain, plus 3 feet
-        </span>
-      </button>
+      <button id="toggle-2025" class="active">Current Flood Risk (2025)</button>
+      <button id="toggle-2050">Future Flood Risk (2050)</button>
     </div>
     
     <!-- Step 3: Legend (dynamically populated by scripts.js) -->
@@ -139,10 +126,13 @@
        ======================================== -->
   <div id="map"></div>
   
-  <!-- Logo Overlay (bottom-right on map) -->
+  <!-- Logo Overlay (top-left on map) -->
   <div class="map-logo">
     <img src="img/RBD-logo.png" alt="Rebuild by Design logo">
   </div>
+
+  <!-- Methodology Info Button (bottom-right on map) -->
+  <button id="methodology-link" class="map-info-btn" aria-label="Methodology">i</button>
 
 
 
